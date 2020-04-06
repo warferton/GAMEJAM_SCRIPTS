@@ -26,10 +26,11 @@ public class Node : MonoBehaviour{
         if(EventSystem.current.IsPointerOverGameObject()){
             return;
         }
-        if(buildManager.GetTurretToBuild == null){
+        if(turret != null){
+            buildManager.SelectNode(this);
             return;
         }
-        if(turret != null){
+        if(buildManager.GetTurretToBuild == null){
             return;
         }
         GameObject turrretToBuild = buildManager.GetTurretToBuild();

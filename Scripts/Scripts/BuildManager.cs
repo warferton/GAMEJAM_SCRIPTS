@@ -8,6 +8,8 @@ public class BuildManager : Monobehaviour{
 
 
     private TurretBP turretToBuild;
+    private Node selectedNode;
+    public NodeUI nodeUI;
 
     [Header("Turret Models")]
     public GmaeObject standardTurretPref;
@@ -30,6 +32,22 @@ public class BuildManager : Monobehaviour{
 
     public void SelectTurretTuBuild(TurretBP turret){
         turretToBuild = turret;
+        DeselectNode();
+    }
+
+    public void SelectNode(Node node){
+        if(selectedNode == node){
+            DeselectNode();
+            return;
+        }
+        selectedNode = node;
+        turretToBuild = null;
+
+        nodeUI.SetTarget(node);
+    }
+    public void DeselectNode(){
+        selectedNode = null;
+        nodeUI.Hide();
     }
 
     public void BuildTurretOn(Node node){
