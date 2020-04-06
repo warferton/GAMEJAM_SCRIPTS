@@ -1,19 +1,19 @@
 //Should Be Put In GameMaster Object
 using UnityEngine;
+using System.Collection;
 
 public class BuildManager : Monobehaviour{
-
+    [Header("BM")]
     public static BuildManager  instance;
-    
 
 
-    private GmaeObject turretToBuild;
+    private TurretBP turretToBuild;
 
-    public GmaeObject GetTurretToBuild(){
-        return turretToBuild;
-    }
-
+    [Header("Turret Models")]
     public GmaeObject standardTurretPref;
+    public GmaeObject superTurretPref;
+    public GmaeObject missleTurretPref;
+    public GmaeObject mortarTurretPref;
 
     void Awake()
     {
@@ -24,8 +24,25 @@ public class BuildManager : Monobehaviour{
         instance = this;
     }
 
-    void Start(){
-        turretToBuild = standardTurretPref;
+    public GmaeObject GetTurretToBuild(){
+        return turretToBuild;
     }
 
-}
+    public void SelectTurretTuBuild(TurretBP turret){
+        turretToBuild = turret;
+    }
+
+    public void BuildTurretOn(Node node){
+        if(PlayerStats.money < turretToBuild.cost){
+            Debug.Log("Not ENOUGH RESOURCES");
+            return;
+        }
+
+        PlayerStats.money -= turretToBuild.cost;
+
+        GmaeObject turret = (GmaeObject)Instantiate(turretToBuild.prefab, node.GetBuildPosition(), Quaternion.identity);
+        node.turret = turret;
+
+        Debug.Log("TB! MONNEY LEFT:" + PlayerStats.money);
+    }
+} 
